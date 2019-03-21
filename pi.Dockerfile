@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM resin/rpi-raspbian:latest
 
 RUN apt-get update \
     && apt-get install -y wget \
@@ -11,12 +11,14 @@ RUN apt-get update \
     libxml2-dev \
     libxslt1-dev \
     zlib1g-dev \
+    build-essential \
     python-dev \
     mopidy \
     mopidy-spotify \
     python-tunigo \
     mopidy-spotify-tunigo \
     python-pip \
+    gstreamer1.0-alsa \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt requirements.txt

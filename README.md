@@ -4,32 +4,36 @@ This is the Docker image that I'm currently using to run [Mopidy](https://www.mo
 
 It probably won't be exactly the setup you want, but feel free to create a fork for your own setup.
 
-Build:
+## Build Your Own
 
 ```shell
-docker build -t andrewcodes/mopidy .
-docker build -t andrewcodes/mopidy -f Dockerfile.pi .
+docker build -t yourUser/mopidy .
+docker build -t yourUser/mopidy:pi -f pi.Dockerfile .
 ```
 
-Run:
+## Mopidy Config
+
+Place `mopidy.conf` file in `./config`
+
+## Run
 
 ```shell
-docker run -it --rm --device /dev/snd --name mopidy -p 6600:6600 -p 6680:6680 andrewcodes/mopidy
+docker run -it --rm --device /dev/snd --mount type=bind,src=`$(PWD)/config`,dst=/root/.config/mopidy --name mopidy -p 6600:6600 -p 6680:6680 andrewcodes/mopidy:pi
 ```
 
-Run in background:
+## Run in background
 
 ```shell
-docker run -d --restart=unless-stopped --device /dev/snd --name mopidy -p 6600:6600 -p 6680:6680 andrewcodes/mopidy
+docker run -d --restart=unless-stopped --device /dev/snd --mount type=volume,src=`$(PWD)/config`,target=/root/.config/mopidy --name mopidy -p 6600:6600 -p 6680:6680 andrewcodes/mopidy:pi
 ```
 
-View logs:
+## View logs
 
 ```shell
 docker logs mopidy
 ```
 
-Execute any Mopidy command:
+## Execute any Mopidy command
 
 ```shell
 docker exec mopidy mopidy <cmd>
